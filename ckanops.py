@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os
+import operator
 import ckanapi
 from ckanapi.errors import CKANAPIError
 from urlparse import urlparse
@@ -126,8 +127,32 @@ def update_bbox(remote, dataset, region):
     update_dataset(remote, dataset, {'extras': extras})
 
 
+def tags_covered_by_an_organization(o):
+    tags = []
+    for p in o['packages']:
+        tag_names = [t['name'] for t in p['tags']]
+        tags.append(tag_names)
+    if len(tags) == 0:
+        return []
+    else:
+        return reduce(operator.add, tags)
+
+
+def all_tags_by_organization(remote):
+    tags_by_organization = {}
+
+    organizations_names = remote.action.organization_list()
+    for name in organizations_names:
+        organization = remote.action.organization_show(id=name)
+        tags = tags_covered_by_an_organization(organization)
+        tags_by_organization[name] = tags
+
+    return tags_by_organization
+
+
 def main():
     remote = ckanapi.RemoteCKAN(host, user_agent='ckanops/1.0', apikey=token)
+
     datasets = remote.action.package_list()
     # datasets = [d['name'] for d in remote.action.package_search(q='nacional')['results']]
 
