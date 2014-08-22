@@ -130,7 +130,7 @@ def update_bbox(remote, dataset, region):
 def tags_covered_by_an_organization(o):
     tags = []
     for p in o['packages']:
-        tag_names = [t['name'] for t in p['tags']]
+        tag_names = [t['name'].encode('UTF8') for t in p['tags']]
         tags.append(tag_names)
     if len(tags) == 0:
         return []
