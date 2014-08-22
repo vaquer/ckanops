@@ -154,6 +154,8 @@ def main():
     remote = ckanapi.RemoteCKAN(host, user_agent='ckanops/1.0', apikey=token)
 
     datasets = remote.action.package_list()
+
+    # all_tags = all_tags_by_organization(remote)
     # datasets = [d['name'] for d in remote.action.package_search(q='nacional')['results']]
 
     print "Will update", len(datasets), "datasets"
