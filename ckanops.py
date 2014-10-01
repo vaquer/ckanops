@@ -150,6 +150,16 @@ def all_tags_by_organization(remote):
     return tags_by_organization
 
 
+# shows people in charge per dataset
+def who_is_in_charge(remote):
+    return 1
+
+
+# deletes duplicated harvester jobs
+def wtf_harvester(remote):
+    return 1
+
+
 def main():
     remote = ckanapi.RemoteCKAN(host, user_agent='ckanops/1.0', apikey=token)
 
