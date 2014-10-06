@@ -24,11 +24,11 @@ def create_should_succeed():
 
 
 def list_datasets():
-    print demo.action.package_list()
+    return demo.action.package_list()
 
 
 def list_groups():
-    print demo.action.group_list(id='data-explorer')
+    return demo.action.group_list(id='data-explorer')
 
 
 def package(_id):
@@ -40,6 +40,11 @@ def package_to_dcat(package):
 
 
 pkg = package('ciclones')
-print pkg
-print package_to_dcat(pkg)
+# print pkg
+# print package_to_dcat(pkg)
+
+print 'Datasets'
+print list_datasets()
+print 'Groups'
+print list_groups()
 
