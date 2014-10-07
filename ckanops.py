@@ -25,7 +25,8 @@ def create_dataset(remote, dataset):
     return pkg
 
 
-def update_dataset(remote, dataset, attributes):
+def update_dataset(remote, dataset, attributes={}):
+    pkg = None
     try:
         # Remove duplicate metadata fields
         # NOTE: This happened in a few experiments in the extra fields
@@ -34,14 +35,13 @@ def update_dataset(remote, dataset, attributes):
 
         # Merge new attributes and update package
         dataset = dict(dataset.items() + attributes.items())
-        remote.call_action('package_update',
+        pkg = remote.call_action('package_update',
                 data_dict=dataset,
                 apikey=token)
-        return True
     except CKANAPIError, e:
         print "CKANAPIError for dataset", "'%s'" % dataset['title']
         print e
-    return False
+    return pkg
 
 
 def update_resource(remote, resource, attributes):
