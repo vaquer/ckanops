@@ -1,0 +1,4 @@
+ckanapi
+webtest
+PasteDeploy
+WSGIProxy2

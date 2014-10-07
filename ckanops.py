@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import os
 import operator
@@ -11,7 +12,21 @@ host = os.environ['CKAN_HOST']
 token = os.environ['CKAN_API_TOKEN']
 
 
-def update_dataset(remote, dataset, attributes):
+def create_dataset(remote, dataset):
+    pkg = None
+    try:
+        pkg = remote.call_action('package_create', data_dict=dataset)
+    except ckanapi.NotAuthorized, e:
+        print e
+    except ckanapi.ValidationError, e:
+        print e
+    except CKANAPIError, e:
+        print e
+    return pkg
+
+
+def update_dataset(remote, dataset, attributes={}):
+    pkg = None
     try:
         # Remove duplicate metadata fields
         # NOTE: This happened in a few experiments in the extra fields
@@ -20,14 +35,13 @@ def update_dataset(remote, dataset, attributes):
 
         # Merge new attributes and update package
         dataset = dict(dataset.items() + attributes.items())
-        remote.call_action('package_update',
+        pkg = remote.call_action('package_update',
                 data_dict=dataset,
                 apikey=token)
-        return True
     except CKANAPIError, e:
         print "CKANAPIError for dataset", "'%s'" % dataset['title']
         print e
-    return False
+    return pkg
 
 
 def update_resource(remote, resource, attributes):
@@ -42,6 +56,23 @@ def update_resource(remote, resource, attributes):
         print "CKANAPIError for resource", "'%s'" % resource['url']
         print e
     return False
+
+
+def upsert_dataset(remote, dataset):
+    if get_package(remote, dataset['name']):
+        new_pkg = update_dataset(remote, dataset)
+    else:
+        new_pkg = create_dataset(remote, dataset)
+    return new_pkg
+
+
+def get_package(remote, _id):
+    pkg = None
+    try:
+        pkg = remote.action.package_show(id=_id)
+    except ckanapi.NotFound, e:
+        print e
+    return pkg
 
 
 # Extract DCAT publisher name from metadata
