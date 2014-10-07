@@ -58,6 +58,14 @@ def update_resource(remote, resource, attributes):
     return False
 
 
+def upsert_dataset(remote, dataset):
+    if get_package(remote, dataset['name']):
+        new_pkg = update_dataset(remote, dataset)
+    else:
+        new_pkg = create_dataset(remote, dataset)
+    return new_pkg
+
+
 def get_package(remote, _id):
     pkg = None
     try:
