@@ -43,7 +43,7 @@ def dcat_to_ckan(dcat_dict):
             'name': distribution.get('title'),
             'description': distribution.get('description'),
             'url': distribution.get('downloadURL') or distribution.get('accessURL'),
-            'format': distribution.get('format'),
+            'format': distribution.get('mediaType').split('/')[-1],
         }
 
         if distribution.get('byteSize'):
