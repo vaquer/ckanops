@@ -10,6 +10,7 @@ import converters
 import urllib2
 import json
 import random
+import munge
 
 
 host = os.environ['CKAN_HOST']
@@ -56,15 +57,14 @@ def dcat_to_utf8_dict(url):
 # print 'Groups'
 # print list_groups()
 
-catalog = dcat_to_utf8_dict("http://adela.datos.gob.mx/conapo/catalogo.json")
+catalog = dcat_to_utf8_dict("http://adela.datos.gob.mx/sedesol/catalogo.json")
 print catalog.get('title')
 
 for dataset in catalog.get('dataset', []):
     d = converters.dcat_to_ckan(dataset)
-    d['name'] = 'foo-%s' % random.randrange(0,31337)
+    d['name'] = munge.munge_title_to_name(d['title'])
     print "Creating dataset '%s'" % d['title'], "with %d resources" % len(d['resources'])
-    print "---"
-    print d
+    print "Name: %s" % d['name']
     ckanops.create_dataset(demo, d)
 
 
