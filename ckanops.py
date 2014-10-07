@@ -58,10 +58,10 @@ def update_resource(remote, resource, attributes):
     return False
 
 
-def get_package(_id):
+def get_package(remote, _id):
     pkg = None
     try:
-        pkg = demo.action.package_show(id=_id)
+        pkg = remote.action.package_show(id=_id)
     except ckanapi.NotFound, e:
         print e
     return pkg
