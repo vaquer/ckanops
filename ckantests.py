@@ -61,6 +61,7 @@ for dataset in catalog.get('dataset', []):
     d['name'] = munge.munge_title_to_name(d['title'])
     print "Creating dataset '%s'" % d['title'], "with %d resources" % len(d['resources'])
     print "Name: %s" % d['name']
+    print "Org: %s" % d['owner_org']
     new_dataset = ckanops.upsert_dataset(demo, d)
     if new_dataset:
         print 'Dataset upserted'
