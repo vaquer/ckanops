@@ -42,10 +42,10 @@ def package_to_dcat(package):
 
 
 def dcat_to_utf8_dict(url):
-    return urllib2.urlopen(url).read().decode('utf-8')
+    return json.loads(urllib2.urlopen(url).read().decode('utf-8'))
 
 
-pkg = package('ciclones')
+# pkg = package('ciclones')
 # print pkg
 # print package_to_dcat(pkg)
 
@@ -54,5 +54,6 @@ pkg = package('ciclones')
 # print 'Groups'
 # print list_groups()
 
-print dcat_to_utf8_dict("http://adela.datos.gob.mx/nafin/catalogo.json")
+d = dcat_to_utf8_dict("http://adela.datos.gob.mx/nafin/catalogo.json")
+print d['title']
 
