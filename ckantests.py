@@ -54,6 +54,11 @@ def dcat_to_utf8_dict(url):
 # print 'Groups'
 # print list_groups()
 
-d = dcat_to_utf8_dict("http://adela.datos.gob.mx/nafin/catalogo.json")
-print d['title']
+catalog = dcat_to_utf8_dict("http://adela.datos.gob.mx/conapo/catalogo.json")
+print catalog.get('title')
+
+for dataset in catalog.get('dataset', []):
+    d = converters.dcat_to_ckan(dataset)
+    print d['notes']
+
 
