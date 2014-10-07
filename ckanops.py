@@ -12,6 +12,19 @@ host = os.environ['CKAN_HOST']
 token = os.environ['CKAN_API_TOKEN']
 
 
+def create_dataset(remote, dataset):
+    pkg = None
+    try:
+        pkg = remote.call_action('package_create', data_dict=dataset)
+    except ckanapi.NotAuthorized, e:
+        print e
+    except ckanapi.ValidationError, e:
+        print e
+    except CKANAPIError, e:
+        print e
+    return pkg
+
+
 def update_dataset(remote, dataset, attributes):
     try:
         # Remove duplicate metadata fields

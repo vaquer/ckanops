@@ -9,6 +9,7 @@ import webtest
 import converters
 import urllib2
 import json
+import random
 
 
 host = os.environ['CKAN_HOST']
@@ -60,6 +61,10 @@ print catalog.get('title')
 
 for dataset in catalog.get('dataset', []):
     d = converters.dcat_to_ckan(dataset)
-    print d['notes']
+    d['name'] = 'foo-%s' % random.randrange(0,31337)
+    print "Creating dataset '%s'" % d['title'], "with %d resources" % len(d['resources'])
+    print "---"
+    print d
+    ckanops.create_dataset(demo, d)
 
 
