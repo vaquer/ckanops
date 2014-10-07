@@ -17,11 +17,11 @@ def create_dataset(remote, dataset):
     try:
         pkg = remote.call_action('package_create', data_dict=dataset)
     except ckanapi.NotAuthorized, e:
-        print e
+        print 'create_dataset: ', e
     except ckanapi.ValidationError, e:
-        print e
+        print 'create_dataset: ', e
     except CKANAPIError, e:
-        print e
+        print 'create_dataset: ', e
     return pkg
 
 
@@ -39,8 +39,7 @@ def update_dataset(remote, dataset, attributes={}):
                 data_dict=dataset,
                 apikey=token)
     except CKANAPIError, e:
-        print "CKANAPIError for dataset", "'%s'" % dataset['title']
-        print e
+        print 'update_dataset: ', e
     return pkg
 
 
@@ -53,8 +52,7 @@ def update_resource(remote, resource, attributes):
                 apikey=token)
         return True
     except CKANAPIError, e:
-        print "CKANAPIError for resource", "'%s'" % resource['url']
-        print e
+        print 'update_resource: ', e
     return False
 
 
@@ -71,7 +69,7 @@ def get_package(remote, _id):
     try:
         pkg = remote.action.package_show(id=_id)
     except ckanapi.NotFound, e:
-        print e
+        print 'get_package: ', e
     return pkg
 
 
@@ -133,7 +131,7 @@ def update_resources_format_based_on_extension(remote, dataset):
                     r,
                     { 'format': f })
         except KeyError, e:
-            print extension, "is not a known file extension"
+            print 'update_resources_format_based_on_extension: ', extension, "is not a known file extension"
 
 
 def get_extension_from_url(u):
