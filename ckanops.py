@@ -58,6 +58,15 @@ def update_resource(remote, resource, attributes):
     return False
 
 
+def get_package(_id):
+    pkg = None
+    try:
+        pkg = demo.action.package_show(id=_id)
+    except ckanapi.NotFound, e:
+        print e
+    return pkg
+
+
 # Extract DCAT publisher name from metadata
 def get_dcat_publisher(dataset):
     extra_metadata = dataset.get('extras', [])

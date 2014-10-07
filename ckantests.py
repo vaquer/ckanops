@@ -36,10 +36,6 @@ def list_groups():
     return demo.action.group_list(id='data-explorer')
 
 
-def package(_id):
-    return demo.action.package_show(id=_id)
-
-
 def package_to_dcat(package):
     return converters.ckan_to_dcat(package)
 
@@ -48,7 +44,7 @@ def dcat_to_utf8_dict(url):
     return json.loads(urllib2.urlopen(url).read().decode('utf-8'))
 
 
-# pkg = package('ciclones')
+# pkg = ckanops.get_package('ciclones')
 # print pkg
 # print package_to_dcat(pkg)
 
