@@ -34,7 +34,7 @@ def dcat_to_ckan(dcat_dict):
 
     package_dict['extras'].append({
         'key': 'language',
-        'value': ','.join(dcat_dict.get('language', []))
+        'value': dcat_dict.get('language', [])
     })
 
     package_dict['resources'] = []
