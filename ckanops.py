@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+
 import os
 import operator
 import ckanapi
@@ -10,9 +11,18 @@ from urlparse import urlparse
 import sys
 import getopt
 
+import urllib2
+import json
+import converters
+import munge
+
 
 host = os.environ['CKAN_HOST']
 token = os.environ['CKAN_API_TOKEN']
+
+
+def dcat_to_utf8_dict(url):
+    return json.loads(urllib2.urlopen(url).read().decode('utf-8'))
 
 
 def create_dataset(remote, dataset):
@@ -200,7 +210,6 @@ def usage():
 
 def main(argv):
     remote = ckanapi.RemoteCKAN(host, user_agent='ckanops/1.0', apikey=token)
-    harvest_source = ""
 
     try:
         opts, args = getopt.getopt(argv, "hds:", ["help", "datasets", "harvest="])
@@ -217,7 +226,16 @@ def main(argv):
             for d in datasets:
                 print d
         elif opt in ("-s", "--harvest"):
-            harvest_source = arg
+            catalog = dcat_to_utf8_dict(arg)
+            for dcat_dataset in catalog.get('dataset', []):
+                ckan_dataset = converters.dcat_to_ckan(dcat_dataset)
+                ckan_dataset['name'] = munge.munge_title_to_name(ckan_dataset['title'])
+                print 'Creating dataset "%s"' % ckan_dataset['title'], 'with %d resources' % len(ckan_dataset['resources'])
+                new_dataset = upsert_dataset(remote, ckan_dataset)
+                if new_dataset:
+                    print 'Dataset upserted'
+                else:
+                    print 'Something went wrong'
 
 
 if __name__ == "__main__":
