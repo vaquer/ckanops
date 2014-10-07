@@ -7,6 +7,9 @@ import ckanapi
 from ckanapi.errors import CKANAPIError
 from urlparse import urlparse
 
+import sys
+import getopt
+
 
 host = os.environ['CKAN_HOST']
 token = os.environ['CKAN_API_TOKEN']
@@ -189,28 +192,35 @@ def wtf_harvester(remote):
     return 1
 
 
-def main():
+def usage():
+    print 'Usage:'
+    print sys.argv[0], '--datasets'
+    print sys.argv[0], '--harvest <URI>'
+
+
+def main(argv):
     remote = ckanapi.RemoteCKAN(host, user_agent='ckanops/1.0', apikey=token)
+    harvest_source = ""
 
-    datasets = remote.action.package_list()
-
-    # all_tags = all_tags_by_organization(remote)
-    # datasets = [d['name'] for d in remote.action.package_search(q='nacional')['results']]
-
-    print "Will update", len(datasets), "datasets"
-    for d in datasets:
-        # Get dataset metadata
-        pkg = remote.action.package_show(id=d)
-        # Could stumble upon harvesters
-        if pkg['type'] == 'dataset':
-            # update_dataset_owner_as_dcat_publisher(remote, pkg)
-            # clear_dataset_license(remote, pkg)
-            update_resources_format_based_on_extension(remote, pkg)
-            # update_bbox(remote, pkg, 'Mexico')
-
+    try:
+        opts, args = getopt.getopt(argv, "hds:", ["help", "datasets", "harvest="])
+    except getopt.GetoptError, e:
+        print str(e)
+        usage()
+        sys.exit(2)
+    for opt, arg in opts:
+        if opt in ("-h", "--help"):
+            usage()
+            sys.exit()
+        elif opt in ("-d", "--datasets"):
+            datasets = remote.action.package_list()
+            for d in datasets:
+                print d
+        elif opt in ("-s", "--harvest"):
+            harvest_source = arg
 
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1:])
 
 
