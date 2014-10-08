@@ -39,11 +39,13 @@ def dcat_to_ckan(dcat_dict):
 
     package_dict['resources'] = []
     for distribution in dcat_dict.get('distribution', []):
+        mt = distribution.get('mediaType')
+        fr = mt.split('/')[-1] if hasattr(mt, 'split') else ''
         resource = {
             'name': distribution.get('title'),
             'description': distribution.get('description'),
             'url': distribution.get('downloadURL') or distribution.get('accessURL'),
-            'format': distribution.get('mediaType').split('/')[-1],
+            'format': fr
         }
 
         if distribution.get('byteSize'):
