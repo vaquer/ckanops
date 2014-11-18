@@ -213,13 +213,14 @@ def usage():
     print sys.argv[0], '--datasets'
     print sys.argv[0], '--harvest <URI>'
     print sys.argv[0], '--find <field:value>'
+    print sys.argv[0], '--replace <field> <old_value> <new_value>'
 
 
 def main(argv):
     remote = ckanapi.RemoteCKAN(host, user_agent='ckanops/1.0', apikey=token)
 
     try:
-        opts, args = getopt.getopt(argv, "hds:f:", ["help", "datasets", "harvest=", "find="])
+        opts, args = getopt.getopt(argv, "hds:f:r:", ["help", "datasets", "harvest=", "find=", "replace="])
     except getopt.GetoptError, e:
         print str(e)
         usage()
@@ -248,6 +249,15 @@ def main(argv):
             resources = find_resources_with_query(remote, query)
             for r in resources['results']:
                 print r['name']
+        elif opt in ("-r", "--replace"):
+            # ✗ python ckanops.py --replace format csvx CSV
+            field = arg
+            old_value = args[0]
+            new_value = args[1]
+            query = { 'query': "{0}:{1}".format(field, old_value) }
+            resources = find_resources_with_query(remote, query)
+            for r in resources['results']:
+                update_resource(remote, r, { field: new_value })
 
 
 if __name__ == "__main__":
