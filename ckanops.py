@@ -119,6 +119,12 @@ def clear_dataset_license(remote, dataset):
         print "Updated", dataset['license_id'], "to notspecified", "for", title
 
 
+# Looks for resources matching attributes defined as a string of the form field:term
+def find_resources_with_query(remote, query):
+    resources = remote.call_action('resource_search', data_dict=query)
+    return resources
+
+
 def update_resources_format_based_on_extension(remote, dataset):
     formats = {
         'csv':      'CSV',
@@ -206,13 +212,14 @@ def usage():
     print 'Usage:'
     print sys.argv[0], '--datasets'
     print sys.argv[0], '--harvest <URI>'
+    print sys.argv[0], '--find <field:value>'
 
 
 def main(argv):
     remote = ckanapi.RemoteCKAN(host, user_agent='ckanops/1.0', apikey=token)
 
     try:
-        opts, args = getopt.getopt(argv, "hds:", ["help", "datasets", "harvest="])
+        opts, args = getopt.getopt(argv, "hds:f:", ["help", "datasets", "harvest=", "find="])
     except getopt.GetoptError, e:
         print str(e)
         usage()
@@ -236,6 +243,11 @@ def main(argv):
                     print 'Dataset upserted'
                 else:
                     print 'Something went wrong'
+        elif opt in ("-f", "--find"):
+            query = { 'query': arg }
+            resources = find_resources_with_query(remote, query)
+            for r in resources['results']:
+                print r['name']
 
 
 if __name__ == "__main__":
