@@ -220,7 +220,7 @@ def usage():
     print sys.argv[0], '--harvest <URI>'
     print sys.argv[0], '--find-datasets <field>:<value>'
     print sys.argv[0], '--find <field:value>'
-    print sys.argv[0], '--replace <field> <old_value> <new_value>'
+    print sys.argv[0], '--replace <dataset|resource> <field> <old_value> <new_value>'
 
 
 def main(argv):
@@ -260,14 +260,21 @@ def main(argv):
             for r in resources['results']:
                 print r['name']
         elif opt in ("-r", "--replace"):
-            # ✗ python ckanops.py --replace format csvx CSV
-            field = arg
-            old_value = args[0]
-            new_value = args[1]
+            # ✗ python ckanops.py --replace dataset license_id cc-by notspecified
+            # ✗ python ckanops.py --replace resource format csvx CSV
+            object_type = arg
+            field       = args[0]
+            old_value   = args[1]
+            new_value   = args[2]
             query = "{0}:{1}".format(field, old_value)
-            resources = find_resources_with_query(remote, query)
-            for r in resources['results']:
-                update_resource(remote, r, { field: new_value })
+            if object_type == 'dataset':
+                datasets = find_datasets_with_query(remote, query)
+                for d in datasets['results']:
+                    update_dataset(remote, d, { field: new_value })
+            if object_type == 'resource':
+                resources = find_resources_with_query(remote, query)
+                for r in resources['results']:
+                    update_resource(remote, r, { field: new_value })
 
 
 if __name__ == "__main__":
