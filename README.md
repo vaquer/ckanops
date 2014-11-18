@@ -14,6 +14,7 @@ A collection of everyday tasks on [CKAN](http://ckan.org).
 4. Update datasets spatial coverage based on keywords
 5. Harvest a DCAT remote source
 6. Replace attribute values of datasets and resources
+7. Add datasets to group
 
 ### TODO
 
@@ -40,3 +41,8 @@ Replace attributes
 
 	% python ckanops.py --replace resource format 'csv"' CSV
 	% python ckanops.py --replace dataset license_id notspecified cc-by
+
+Add 2 datasets to a group (test)
+
+	% python ckanops.py -g test indicadores-sobre-el-gobierno fonden
+

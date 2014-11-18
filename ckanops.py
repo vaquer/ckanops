@@ -181,6 +181,18 @@ def update_bbox(remote, dataset, region):
     update_dataset(remote, dataset, {'extras': extras})
 
 
+def update_group_for_datasets(remote, datasets_names, group):
+    try:
+        for d in datasets_names:
+            remote.call_action('member_create', data_dict={
+                'id':group,
+                'object':d,
+                'object_type':'package',
+                'capacity':'member'})
+    except CKANAPIError, e:
+        print 'update_group_for_datasets: ', e
+
+
 def tags_covered_by_an_organization(o):
     tags = []
     for p in o['packages']:
@@ -221,13 +233,14 @@ def usage():
     print sys.argv[0], '--find-datasets <field>:<value>'
     print sys.argv[0], '--find <field:value>'
     print sys.argv[0], '--replace <dataset|resource> <field> <old_value> <new_value>'
+    print sys.argv[0], '--group <group> <dataset-name-1> <dataset-name-2> <...>'
 
 
 def main(argv):
     remote = ckanapi.RemoteCKAN(host, user_agent='ckanops/1.0', apikey=token)
 
     try:
-        opts, args = getopt.getopt(argv, "hds:q:f:r:", ["help", "datasets", "harvest=", "find-datasets=", "find=", "replace="])
+        opts, args = getopt.getopt(argv, "hds:q:f:r:g:", ["help", "datasets", "harvest=", "find-datasets=", "find=", "replace=", "group="])
     except getopt.GetoptError, e:
         print str(e)
         usage()
@@ -275,6 +288,9 @@ def main(argv):
                 resources = find_resources_with_query(remote, query)
                 for r in resources['results']:
                     update_resource(remote, r, { field: new_value })
+        elif opt in ("-g", "--group"):
+            update_group_for_datasets(remote, args, arg)
+
 
 
 if __name__ == "__main__":
