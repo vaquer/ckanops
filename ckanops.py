@@ -127,7 +127,7 @@ def find_datasets_with_query(remote, query):
 
 # Looks for resources matching attributes defined as a string of the form field:term
 def find_resources_with_query(remote, query):
-    resources = remote.call_action('resource_search', data_dict=query)
+    resources = remote.call_action('resource_search', data_dict={'query': query})
     return resources
 
 
@@ -256,8 +256,7 @@ def main(argv):
             for d in datasets['results']:
                 print d['title']
         elif opt in ("-f", "--find"):
-            query = { 'query': arg }
-            resources = find_resources_with_query(remote, query)
+            resources = find_resources_with_query(remote, arg)
             for r in resources['results']:
                 print r['name']
         elif opt in ("-r", "--replace"):
@@ -265,7 +264,7 @@ def main(argv):
             field = arg
             old_value = args[0]
             new_value = args[1]
-            query = { 'query': "{0}:{1}".format(field, old_value) }
+            query = "{0}:{1}".format(field, old_value)
             resources = find_resources_with_query(remote, query)
             for r in resources['results']:
                 update_resource(remote, r, { field: new_value })
