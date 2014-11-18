@@ -13,6 +13,7 @@ A collection of everyday tasks on [CKAN](http://ckan.org).
 3. Update resources format based on URI extensions
 4. Update datasets spatial coverage based on keywords
 5. Harvest a DCAT remote source
+6. Replace attribute values of datasets and resources
 
 ### TODO
 
@@ -35,3 +36,7 @@ Harvest a DCAT source
 
 	% python ckanops.py --harvest <URI>
 
+Replace attributes
+
+	% python ckanops.py --replace resource format 'csv"' CSV
+	% python ckanops.py --replace dataset license_id notspecified cc-by
