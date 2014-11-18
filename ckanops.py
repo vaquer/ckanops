@@ -119,6 +119,12 @@ def clear_dataset_license(remote, dataset):
         print "Updated", dataset['license_id'], "to notspecified", "for", title
 
 
+# Looks for datasets matching attributes defined as a string of the form field:term
+def find_datasets_with_query(remote, query):
+    datasets = remote.call_action('package_search', data_dict={'fq':query})
+    return datasets
+
+
 # Looks for resources matching attributes defined as a string of the form field:term
 def find_resources_with_query(remote, query):
     resources = remote.call_action('resource_search', data_dict=query)
@@ -212,6 +218,7 @@ def usage():
     print 'Usage:'
     print sys.argv[0], '--datasets'
     print sys.argv[0], '--harvest <URI>'
+    print sys.argv[0], '--find-datasets <field>:<value>'
     print sys.argv[0], '--find <field:value>'
     print sys.argv[0], '--replace <field> <old_value> <new_value>'
 
@@ -220,7 +227,7 @@ def main(argv):
     remote = ckanapi.RemoteCKAN(host, user_agent='ckanops/1.0', apikey=token)
 
     try:
-        opts, args = getopt.getopt(argv, "hds:f:r:", ["help", "datasets", "harvest=", "find=", "replace="])
+        opts, args = getopt.getopt(argv, "hds:q:f:r:", ["help", "datasets", "harvest=", "find-datasets=", "find=", "replace="])
     except getopt.GetoptError, e:
         print str(e)
         usage()
@@ -244,6 +251,10 @@ def main(argv):
                     print 'Dataset upserted'
                 else:
                     print 'Something went wrong'
+        elif opt in ("-q", "--find-datasets"):
+            datasets = find_datasets_with_query(remote, arg)
+            for d in datasets['results']:
+                print d['title']
         elif opt in ("-f", "--find"):
             query = { 'query': arg }
             resources = find_resources_with_query(remote, query)
