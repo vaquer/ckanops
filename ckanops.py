@@ -216,6 +216,20 @@ def all_tags_by_organization(remote):
     return tags_by_organization
 
 
+def get_organization_datasets(remote, org_id):
+    organization = remote.action.organization_show(id=org_id)
+    return map(lambda x:x["name"], organization['packages'])
+
+
+def delete_organization_datasets(remote, org_id):
+    datasets_names = get_organization_datasets(remote, org_id)
+    for name in datasets_names:
+        try:
+            remote.action.package_delete(id=name)
+        except CKANAPIError, e:
+            print 'delete_organization_datasets: ', e
+
+
 # shows people in charge per dataset
 def who_is_in_charge(remote):
     return 1
@@ -230,6 +244,7 @@ def usage():
     print 'Usage:'
     print sys.argv[0], '--datasets'
     print sys.argv[0], '--harvest <URI>'
+    print sys.argv[0], '--purge-harvest <URI>'
     print sys.argv[0], '--find-datasets <field>:<value>'
     print sys.argv[0], '--find <field:value>'
     print sys.argv[0], '--replace <dataset|resource> <field> <old_value> <new_value>'
@@ -240,7 +255,7 @@ def main(argv):
     remote = ckanapi.RemoteCKAN(host, user_agent='ckanops/1.0', apikey=token)
 
     try:
-        opts, args = getopt.getopt(argv, "hds:q:f:r:g:", ["help", "datasets", "harvest=", "find-datasets=", "find=", "replace=", "group="])
+        opts, args = getopt.getopt(argv, "hds:p:q:f:r:g:", ["help", "datasets", "harvest=", "purge-harvest=", "find-datasets=", "find=", "replace=", "group="])
     except getopt.GetoptError, e:
         print str(e)
         usage()
@@ -253,8 +268,15 @@ def main(argv):
             datasets = remote.action.package_list()
             for d in datasets:
                 print d
-        elif opt in ("-s", "--harvest"):
+        elif opt in ("-s", "--harvest", "-p", "--purge-harvest"):
             catalog = dcat_to_utf8_dict(arg)
+
+            # If purge mode is activated, then delete all org's datasets
+            if opt in ("-p", "--purge-harvest"):
+                org_name = catalog['dataset'][0]['publisher']['name']
+                org_id = munge.munge_name(org_name)
+                delete_organization_datasets(remote, org_id)
+
             for dcat_dataset in catalog.get('dataset', []):
                 ckan_dataset = converters.dcat_to_ckan(dcat_dataset)
                 ckan_dataset['name'] = munge.munge_title_to_name(ckan_dataset['title'])
