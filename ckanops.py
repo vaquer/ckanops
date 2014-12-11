@@ -258,6 +258,7 @@ def main(argv):
             for dcat_dataset in catalog.get('dataset', []):
                 ckan_dataset = converters.dcat_to_ckan(dcat_dataset)
                 ckan_dataset['name'] = munge.munge_title_to_name(ckan_dataset['title'])
+                ckan_dataset['state'] = 'active'
                 print 'Creating dataset "%s"' % ckan_dataset['title'], 'with %d resources' % len(ckan_dataset['resources'])
                 new_dataset = upsert_dataset(remote, ckan_dataset)
                 if new_dataset:
