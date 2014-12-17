@@ -10,6 +10,7 @@ from urlparse import urlparse
 
 import sys
 import getopt
+import datetime
 
 import urllib2
 import json
@@ -281,7 +282,8 @@ def main(argv):
                 ckan_dataset = converters.dcat_to_ckan(dcat_dataset)
                 ckan_dataset['name'] = munge.munge_title_to_name(ckan_dataset['title'])
                 ckan_dataset['state'] = 'active'
-                print 'Creating dataset "%s"' % ckan_dataset['title'], 'with %d resources' % len(ckan_dataset['resources'])
+                print 'Dataset "%s"' % ckan_dataset['title'], 'with %d resources' % len(ckan_dataset['resources'])
+                print datetime.datetime.utcnow()
                 new_dataset = upsert_dataset(remote, ckan_dataset)
                 if new_dataset:
                     print 'Dataset upserted'
