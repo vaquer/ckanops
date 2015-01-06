@@ -22,7 +22,11 @@ host = os.environ['CKAN_HOST']
 token = os.environ['CKAN_API_TOKEN']
 
 
-def dcat_to_utf8_dict(url):
+def dcat_to_utf8_dict(dcat):
+    return json.loads(dcat)
+
+
+def dcat_url_to_utf8_dict(url):
     return json.loads(urllib2.urlopen(url).read().decode('utf-8'))
 
 
@@ -250,13 +254,14 @@ def usage():
     print sys.argv[0], '--find <field:value>'
     print sys.argv[0], '--replace <dataset|resource> <field> <old_value> <new_value>'
     print sys.argv[0], '--group <group> <dataset-name-1> <dataset-name-2> <...>'
+    print sys.argv[0], '--dcat-2-ckan <dcat-dataset>'
 
 
 def main(argv):
     remote = ckanapi.RemoteCKAN(host, user_agent='ckanops/1.0', apikey=token)
 
     try:
-        opts, args = getopt.getopt(argv, "hds:p:q:f:r:g:", ["help", "datasets", "harvest=", "purge-harvest=", "find-datasets=", "find=", "replace=", "group="])
+        opts, args = getopt.getopt(argv, "hds:p:q:f:r:g:t:", ["help", "datasets", "harvest=", "purge-harvest=", "find-datasets=", "find=", "replace=", "group=", "dcat-2-ckan="])
     except getopt.GetoptError, e:
         print str(e)
         usage()
@@ -270,7 +275,7 @@ def main(argv):
             for d in datasets:
                 print d
         elif opt in ("-s", "--harvest", "-p", "--purge-harvest"):
-            catalog = dcat_to_utf8_dict(arg)
+            catalog = dcat_url_to_utf8_dict(arg)
 
             # If purge mode is activated, then delete all org's datasets
             if opt in ("-p", "--purge-harvest"):
@@ -315,6 +320,11 @@ def main(argv):
                     update_resource(remote, r, { field: new_value })
         elif opt in ("-g", "--group"):
             update_group_for_datasets(remote, args, arg)
+        elif opt in ("-t", "--dcat-2-ckan"):
+            # ✗ cat inegi.json | jq '.' | xargs -t python ckanops.py --dcat-2-ckan
+            dataset = dcat_to_utf8_dict(arg)
+            print dataset
+            print converters.dcat_to_ckan(dataset)
 
 
 
