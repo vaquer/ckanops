@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/mxabierto/ckanops.png?label=ready&title=Ready)](https://waffle.io/mxabierto/ckanops)
 # ckanops.py
 
 ALL YOUR DATASETS ARE BELONG TO US
