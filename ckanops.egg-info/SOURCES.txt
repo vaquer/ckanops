@@ -1,0 +1,11 @@
+ckanops/__init__.py
+ckanops/version.py
+ckanops.egg-info/PKG-INFO
+ckanops.egg-info/SOURCES.txt
+ckanops.egg-info/dependency_links.txt
+ckanops.egg-info/entry_points.txt
+ckanops.egg-info/requires.txt
+ckanops.egg-info/top_level.txt
+tests/__init__.py
+tests/base.py
+tests/test_version.py

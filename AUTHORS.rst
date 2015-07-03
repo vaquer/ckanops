@@ -1,0 +1,13 @@
+=======
+Credits
+=======
+
+Development Lead
+----------------
+
+* Rod Wilhelmy <rwilhelmy@gmail.com>
+
+Contributors
+------------
+
+None yet. Why not be the first?
