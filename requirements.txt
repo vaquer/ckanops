@@ -1,5 +1,5 @@
 wheel==0.23.0
-ckanapi
-webtest
-PasteDeploy
-WSGIProxy2
+ckanapi==3.5
+WebTest==2.0.18
+PasteDeploy==1.5.2
+WSGIProxy2==0.4.2
