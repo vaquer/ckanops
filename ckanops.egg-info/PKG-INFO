@@ -1,0 +1,22 @@
+Metadata-Version: 1.1
+Name: ckanops
+Version: 0.1.0
+Summary: A collection of common tasks for CKAN administrators.
+Home-page: https://github.com/mxabierto/ckanops
+Author: Rod Wilhelmy
+Author-email: rwilhelmy@gmail.com
+License: MIT
+Description: 
+        A collection of common tasks for CKAN administrators.
+        
+Keywords: ckan api open data catalog tasks
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Operating System :: Unix
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3.2
+Classifier: Programming Language :: Python :: 3.3
+Classifier: Operating System :: OS Independent
