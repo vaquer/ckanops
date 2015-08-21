@@ -18,10 +18,6 @@ import converters
 import munge
 
 
-host = os.environ['CKAN_HOST']
-token = os.environ['CKAN_API_TOKEN']
-
-
 def upsert_dataset(remote, dataset):
     if get_package(remote, dataset['name']):
         new_pkg = update_dataset(remote, dataset)
