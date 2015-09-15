@@ -16,6 +16,7 @@ import urllib2
 import json
 import converters
 import munge
+from dataset import update_dataset, create_dataset
 
 
 def upsert_dataset(remote, dataset):

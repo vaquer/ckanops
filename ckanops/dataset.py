@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import ckanapi
 
 
 def create_dataset(remote, dataset):
