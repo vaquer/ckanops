@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import ckanapi
+from ckanapi import CKANAPIError
 
 
 def create_dataset(remote, dataset):
@@ -27,8 +28,7 @@ def update_dataset(remote, dataset, attributes={}):
         # Merge new attributes and update package
         dataset = dict(dataset.items() + attributes.items())
         pkg = remote.call_action('package_update',
-                                 data_dict=dataset,
-                                 apikey=token)
+                                 data_dict=dataset)
     except CKANAPIError, e:
         print 'update_dataset: ', e
     return pkg
