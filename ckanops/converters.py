@@ -17,6 +17,9 @@ def dcat_to_ckan(dcat_dict):
     for keyword in dcat_dict.get('keyword', []):
         package_dict['tags'].append({'name': keyword})
 
+    if dcat_dict.get('govType', False):
+        package_dict['tags'].append({'name': dcat_dict.get('govType'), 'vocabulary_id': 'gov_types'})
+
     package_dict['extras'] = []
     for key in ['issued', 'modified']:
         package_dict['extras'].append({'key': 'dcat_{0}'.format(key), 'value': dcat_dict.get(key)})
