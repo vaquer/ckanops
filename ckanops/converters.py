@@ -18,7 +18,7 @@ def dcat_to_ckan(dcat_dict):
         package_dict['tags'].append({'name': keyword})
 
     if dcat_dict.get('govType', False):
-        package_dict['tags'].append({'name': dcat_dict.get('govType').capitalize(), 'vocabulary_id': 'gov_types'})
+        package_dict['tags'].append({'name': dcat_dict.get('govType').capitalize(), 'vocabulary_id': '910b5e72-2723-466d-a892-4be1e4129120'})
 
     package_dict['gov_type'] = dcat_dict.get('govType').capitalize()
 
