@@ -1,3 +1,4 @@
+import os
 import logging
 import munge
 
@@ -17,8 +18,12 @@ def dcat_to_ckan(dcat_dict):
     for keyword in dcat_dict.get('keyword', []):
         package_dict['tags'].append({'name': keyword})
 
+    # Nivel de Gob por medio del vocabulario
     if dcat_dict.get('govType', False):
-        package_dict['tags'].append({'name': dcat_dict.get('govType').capitalize(), 'vocabulary_id': '910b5e72-2723-466d-a892-4be1e4129120'})
+        package_dict['tags'].append({
+            'name': dcat_dict.get('govType').capitalize(),
+            'vocabulary_id': os.environ.get('VOCABULARY_GOV_TYPE_ID', '910b5e72-2723-466d-a892-4be1e4129120')
+        })
 
     package_dict['gov_type'] = dcat_dict.get('govType').capitalize()
 
