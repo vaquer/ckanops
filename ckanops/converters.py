@@ -41,7 +41,9 @@ def dcat_to_ckan(dcat_dict):
         package_dict['owner_org'] = munge.munge_name(dcat_publisher.get('name'))
         package_dict['extras'].append({'key': 'dcat_publisher_name', 'value': dcat_publisher.get('name')})
         package_dict['extras'].append({'key': 'dcat_publisher_email', 'value': dcat_publisher.get('mbox')})
-        package_dict['extras'].append({'key': 'theme', 'value': dcat_dict.get('theme').capitalize()})
+
+        if dcat_dict.get('theme'):
+            package_dict['extras'].append({'key': 'theme', 'value': dcat_dict.get('theme').capitalize()})
 
     package_dict['extras'].append({
         'key': 'language',
