@@ -41,9 +41,37 @@ def dcat_to_ckan(dcat_dict):
         package_dict['owner_org'] = munge.munge_name(dcat_publisher.get('name'))
         package_dict['extras'].append({'key': 'dcat_publisher_name', 'value': dcat_publisher.get('name')})
         package_dict['extras'].append({'key': 'dcat_publisher_email', 'value': dcat_publisher.get('mbox')})
+        package_dict['extras'].append({'key': 'publisher_type', 'value': dcat_publisher.get('position')})
 
-        if dcat_dict.get('theme'):
-            package_dict['extras'].append({'key': 'theme', 'value': dcat_dict.get('theme').capitalize()})
+    if dcat_dict.get('theme'):
+        package_dict['extras'].append({
+            'key': 'theme', 'value': dcat_dict.get('theme').capitalize()
+        })
+
+    package_dict['extras'].append({
+        'key': 'frequency', 'value': dcat_dict.get('accrualPeriodicity', '')
+    })
+
+    if dcat_dict.get('temporal'):
+        start, end = dcat_dict.get('temporal').split('/')
+        package_dict['extras'].append({
+            'key': 'temporal_start', 'value': start
+        })
+        package_dict['extras'].append({
+            'key': 'temporal_end', 'value': end
+        })
+
+    if dcat_dict.get('spatial'):
+        package_dict['extras'].append({
+            'key': 'spatial_text',
+            'value': dcat_dict.get('spatial')
+        })
+
+    if dcat_dict.get('comments'):
+        package_dict.append({
+            'key': 'version_notes',
+            'value': dcat_dict.get('comments')
+        })
 
     package_dict['extras'].append({
         'key': 'language',
