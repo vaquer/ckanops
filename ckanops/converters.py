@@ -68,7 +68,7 @@ def dcat_to_ckan(dcat_dict):
         })
 
     if dcat_dict.get('comments'):
-        package_dict.append({
+        package_dict['extras'].append({
             'key': 'version_notes',
             'value': dcat_dict.get('comments')
         })
