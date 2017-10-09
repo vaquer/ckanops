@@ -73,6 +73,18 @@ def dcat_to_ckan(dcat_dict):
             'value': dcat_dict.get('comments')
         })
 
+    if dcat_dict.get('dataDictionary'):
+        package_dict['extras'].append({
+            'key': 'dataDictionary',
+            'value': dcat_dict.get('dataDictionary')
+        })
+
+    if dcat_dict.get('quality'):
+        package_dict['extras'].append({
+            'key': 'quality',
+            'value': dcat_dict.get('quality')
+        })
+
     package_dict['extras'].append({
         'key': 'language',
         'value': dcat_dict.get('language', [])
