@@ -45,7 +45,7 @@ def dcat_to_ckan(dcat_dict):
 
     if dcat_dict.get('theme'):
         package_dict['extras'].append({
-            'key': 'theme', 'value': dcat_dict.get('theme').capitalize()
+            'key': 'theme', 'value': dcat_dict.get('theme').title()
         })
 
     package_dict['extras'].append({
@@ -108,7 +108,7 @@ def dcat_to_ckan(dcat_dict):
                 pass
         package_dict['resources'].append(resource)
 
-    print package_dict
+    # print package_dict
     return package_dict
 
 
@@ -165,7 +165,8 @@ def ckan_to_dcat(package_dict):
 
 
 def main():
-    print "No main"
+    pass
+    ##print "No main"
 
 
 if __name__ == "__main__":
