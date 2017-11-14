@@ -18,7 +18,7 @@ def dcat_to_ckan(dcat_dict):
     for keyword in dcat_dict.get('keyword', []):
         package_dict['tags'].append({'name': keyword})
 
-    # Nivel de Gob por medio del vocabulario
+    # Nivel de gobierno por medio del vocabulario
     if dcat_dict.get('govType', False):
         package_dict['tags'].append({
             'name': dcat_dict.get('govType').capitalize(),
@@ -108,7 +108,6 @@ def dcat_to_ckan(dcat_dict):
                 pass
         package_dict['resources'].append(resource)
 
-    # print package_dict
     return package_dict
 
 
@@ -156,7 +155,6 @@ def ckan_to_dcat(package_dict):
             'description': resource.get('description'),
             'format': resource.get('format'),
             'byteSize': resource.get('size'),
-            # TODO: downloadURL or accessURL depending on resource type?
             'accessURL': resource.get('url'),
         }
         dcat_dict['distribution'].append(distribution)
@@ -166,7 +164,6 @@ def ckan_to_dcat(package_dict):
 
 def main():
     pass
-    ##print "No main"
 
 
 if __name__ == "__main__":
