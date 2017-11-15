@@ -108,6 +108,7 @@ def dcat_to_ckan(dcat_dict):
                 pass
         package_dict['resources'].append(resource)
 
+    print package_dict
     return package_dict
 
 
