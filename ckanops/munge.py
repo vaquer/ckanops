@@ -3,8 +3,8 @@
 
 import re
 
-PACKAGE_NAME_MIN_LENGTH, PACKAGE_NAME_MAX_LENGTH = (2, 250)
-MIN_TAG_LENGTH, MAX_TAG_LENGTH = (2, 250)
+PACKAGE_NAME_MIN_LENGTH, PACKAGE_NAME_MAX_LENGTH = (2, 100)
+MIN_TAG_LENGTH, MAX_TAG_LENGTH = (2, 100)
 
 def munge_name(name):
     '''Munges the package name field in case it is not to spec.
