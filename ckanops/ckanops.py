@@ -40,6 +40,17 @@ def get_package(remote, _id):
     return pkg
 
 
+def get_dataset_groups(remote, name):
+    groups = []
+    try:
+        dataset = remote.action.package_show(id=name)
+        print 'Dataset Groups', dataset['groups']
+        groups = dataset['groups']
+    except ckanapi.NotFound, e:
+        print 'get_package: ', e
+    return groups
+
+
 # Looks for datasets matching attributes defined as a string of the form field:term
 def find_datasets_with_query(remote, query):
     datasets = remote.call_action('package_search', data_dict={'fq': query})
