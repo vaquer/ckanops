@@ -20,9 +20,10 @@ from dataset import update_dataset, create_dataset
 
 
 def upsert_dataset(remote, dataset):
-    print 'upsert_dataset', dataset
     if get_package(remote, dataset['name']):
         print 'EXISTE'
+        dataset['groups'] = get_dataset_groups(remote, dataset['name'])
+        print 'Obtenido de CKAN', dataset['groups']
         new_pkg = update_dataset(remote, dataset)
     else:
         print 'NO EXISTE'
@@ -34,10 +35,20 @@ def get_package(remote, _id):
     pkg = None
     try:
         pkg = remote.action.package_show(id=_id)
-        print 'Log:Dataset', pkg
+    except ckanapi.NotFound, e:
+        print 'Error package: ', e
+    return pkg
+
+
+def get_dataset_groups(remote, name):
+    groups = []
+    try:
+        dataset = remote.action.package_show(id=name)
+        print 'Dataset Groups', dataset['groups']
+        groups = dataset['groups']
     except ckanapi.NotFound, e:
         print 'get_package: ', e
-    return pkg
+    return groups
 
 
 # Looks for datasets matching attributes defined as a string of the form field:term
