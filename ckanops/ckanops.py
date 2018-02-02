@@ -45,7 +45,8 @@ def get_dataset_groups(remote, name):
     try:
         dataset = remote.action.package_show(id=name)
         print 'Dataset Groups', dataset['groups']
-        groups = dataset['groups']
+        for g in dataset['groups']:
+            print 'tienes Group', g
     except ckanapi.NotFound, e:
         print 'get_package: ', e
     return groups
