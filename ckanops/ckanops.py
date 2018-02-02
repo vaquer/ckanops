@@ -31,6 +31,7 @@ def get_package(remote, _id):
     pkg = None
     try:
         pkg = remote.action.package_show(id=_id)
+        print 'Log:Dataset', pkg
     except ckanapi.NotFound, e:
         print 'get_package: ', e
     return pkg
@@ -43,6 +44,7 @@ def find_datasets_with_query(remote, query):
 
 
 def update_group_for_datasets(remote, datasets_names, group):
+    print 'Log:groups', datasets_names, groups
     try:
         for d in datasets_names:
             remote.call_action('member_create', data_dict={
