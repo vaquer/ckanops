@@ -23,6 +23,7 @@ def upsert_dataset(remote, dataset):
     print 'upsert_dataset', dataset
     if get_package(remote, dataset['name']):
         print 'EXISTE'
+        dataset['groups'] = get_dataset_groups(remote, dataset['name'])
         new_pkg = update_dataset(remote, dataset)
     else:
         print 'NO EXISTE'
