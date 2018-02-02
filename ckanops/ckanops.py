@@ -20,9 +20,12 @@ from dataset import update_dataset, create_dataset
 
 
 def upsert_dataset(remote, dataset):
+    print 'upsert_dataset', dataset
     if get_package(remote, dataset['name']):
+        print 'EXISTE'
         new_pkg = update_dataset(remote, dataset)
     else:
+        print 'NO EXISTE'
         new_pkg = create_dataset(remote, dataset)
     return new_pkg
 
