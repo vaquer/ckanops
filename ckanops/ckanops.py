@@ -22,11 +22,9 @@ from dataset import update_dataset, create_dataset
 def upsert_dataset(remote, dataset):
     if get_package(remote, dataset['name']):
         dataset['groups'] = get_dataset_groups(remote, dataset['name'])
-        print 'Obtenido de CKAN', dataset['groups']
         new_pkg = update_dataset(remote, dataset)
     else:
         new_pkg = create_dataset(remote, dataset)
-    print 'new_pkg', new_pkg
     return new_pkg
 
 
@@ -44,10 +42,8 @@ def get_dataset_groups(remote, name):
     try:
         dataset = remote.action.package_show(id=name)
         for g in dataset['groups']:
-            print 'tienes Group', g
             if g['name']:
                 groups.append( { 'name': str(g['name']) } )
-                print 'GROUPSJSJH', groups
     except ckanapi.NotFound, e:
         print 'get_package: ', e
     return groups

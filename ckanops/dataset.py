@@ -19,7 +19,6 @@ def create_dataset(remote, dataset):
 
 
 def update_dataset(remote, dataset, attributes={}):
-    print 'UPDATEs'
     pkg = None
     try:
         # Remove duplicate metadata fields
@@ -28,7 +27,6 @@ def update_dataset(remote, dataset, attributes={}):
         dataset['extras'] = [eval(e) for e in unique_extras]
 
         unique_groups = set(str(e) for e in dataset['groups'])
-        print 'unique_groups', unique_groups
         dataset['groups'] = [eval(e) for e in unique_groups]
 
         # Merge new attributes and update package
