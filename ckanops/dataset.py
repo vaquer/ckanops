@@ -25,6 +25,10 @@ def update_dataset(remote, dataset, attributes={}):
         unique_extras = set(str(e) for e in dataset['extras'])
         dataset['extras'] = [eval(e) for e in unique_extras]
 
+        unique_groups = set(str(e) for e in dataset['groups'])
+        print 'unique_groups', unique_groups
+        dataset['groups'] = [eval(e) for e in unique_groups]
+
         # Merge new attributes and update package
         dataset = dict(dataset.items() + attributes.items())
         pkg = remote.call_action('package_update',
