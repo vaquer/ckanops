@@ -48,7 +48,7 @@ def get_dataset_groups(remote, name):
         for g in dataset['groups']:
             print 'tienes Group', g
             if g['id']:
-                groups.append({ 'id': g['id'] })
+                groups.append( { 'id': str(g['id']) } )
         print 'GROUPSJSJH', groups
     except ckanapi.NotFound, e:
         print 'get_package: ', e
