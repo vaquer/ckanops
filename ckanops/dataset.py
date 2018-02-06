@@ -5,6 +5,7 @@ from ckanapi import CKANAPIError
 
 
 def create_dataset(remote, dataset):
+    print 'CREATE'
     pkg = None
     try:
         pkg = remote.call_action('package_create', data_dict=dataset)
@@ -25,12 +26,16 @@ def update_dataset(remote, dataset, attributes={}):
         unique_extras = set(str(e) for e in dataset['extras'])
         dataset['extras'] = [eval(e) for e in unique_extras]
 
+        unique_groups = set(str(e) for e in dataset['groups'])
+        dataset['groups'] = [eval(e) for e in unique_groups]
+
         # Merge new attributes and update package
         dataset = dict(dataset.items() + attributes.items())
         pkg = remote.call_action('package_update',
                                  data_dict=dataset)
     except CKANAPIError, e:
         print 'update_dataset: ', e
+    print 'pkg', pkg
     return pkg
 
 
