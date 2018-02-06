@@ -26,6 +26,7 @@ def upsert_dataset(remote, dataset):
         new_pkg = update_dataset(remote, dataset)
     else:
         new_pkg = create_dataset(remote, dataset)
+    print 'new_pkg', new_pkg
     return new_pkg
 
 

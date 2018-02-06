@@ -5,6 +5,7 @@ from ckanapi import CKANAPIError
 
 
 def create_dataset(remote, dataset):
+    print 'CREATE'
     pkg = None
     try:
         pkg = remote.call_action('package_create', data_dict=dataset)
@@ -18,6 +19,7 @@ def create_dataset(remote, dataset):
 
 
 def update_dataset(remote, dataset, attributes={}):
+    print 'UPDATEs'
     pkg = None
     try:
         # Remove duplicate metadata fields
@@ -35,6 +37,7 @@ def update_dataset(remote, dataset, attributes={}):
                                  data_dict=dataset)
     except CKANAPIError, e:
         print 'update_dataset: ', e
+    print 'pkg', pkg
     return pkg
 
 
