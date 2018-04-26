@@ -34,14 +34,13 @@ def dcat_to_ckan(dcat_dict):
     package_dict['extras'].append({'key': 'guid', 'value': dcat_dict.get('identifier')})
 
     dcat_publisher = dcat_dict.get('publisher')
-    if isinstance(dcat_publisher, basestring):
-        package_dict['owner_org'] = munge.munge_name(dcat_publisher)
-        package_dict['extras'].append({'key': 'dcat_publisher_name', 'value': dcat_publisher})
-    elif isinstance(dcat_publisher, dict) and dcat_publisher.get('name'):
-        package_dict['owner_org'] = munge.munge_name(dcat_publisher.get('name'))
-        package_dict['extras'].append({'key': 'dcat_publisher_name', 'value': dcat_publisher.get('name')})
-        package_dict['extras'].append({'key': 'dcat_publisher_email', 'value': dcat_publisher.get('mbox')})
-        package_dict['extras'].append({'key': 'publisher_type', 'value': dcat_publisher.get('position')})
+    dcat_responsible = dcat_dict.get('responsible')
+    # OWNER ORG
+    package_dict['owner_org'] = munge.munge_name(dcat_publisher.get('name'))
+    # Responsible
+    package_dict['extras'].append({'key': 'dcat_responsible_name', 'value': dcat_responsible.get('contact_name')})
+    package_dict['extras'].append({'key': 'dcat_responsible_email', 'value': dcat_responsible.get('mbox')})
+    package_dict['extras'].append({'key': 'dcat_responsible_position', 'value': dcat_responsible.get('position')})
 
     if dcat_dict.get('theme'):
         package_dict['extras'].append({
@@ -169,4 +168,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
